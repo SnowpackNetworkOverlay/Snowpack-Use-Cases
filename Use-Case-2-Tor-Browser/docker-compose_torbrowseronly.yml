@@ -1,0 +1,14 @@
+version: '2'
+
+services:
+  torbrowser:
+    build: 
+      context : .
+      dockerfile : Dockerfile
+    network_mode: "host"
+    environment:
+      - DISPLAY=:0
+    volumes:
+      - /tmp/.X11-unix:/tmp/.X11-unix
+      #Replace the keyword "username" with your host's username
+      - /home/username/tor:/home/toruser/tor

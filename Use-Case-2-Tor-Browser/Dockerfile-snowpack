@@ -1,0 +1,24 @@
+FROM ubuntu:22.04
+LABEL maintainer Snowpack<support@snowpack.eu>
+
+#COPY snowpack-network/ /root
+COPY snowpack/bin/ /root
+
+# Update ubuntu
+RUN apt-get update
+
+# Install packets
+RUN apt-get install -y nftables
+RUN apt-get install -y apt-utils
+RUN apt-get install -y net-tools
+RUN apt-get install -y sudo
+
+#env variables to be used for username and password 
+ENV USER user
+ENV PASSWORD password
+
+RUN ls /root
+RUN cd /root
+
+
+ENTRYPOINT cd /root; ./snowpack-cli -m user -c config.ini -u $USER -p $PASSWORD -mr config_user_routes.json

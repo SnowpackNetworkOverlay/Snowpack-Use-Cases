@@ -1,0 +1,34 @@
+---
+version: "2.1"
+services:
+    snowpack:
+      build :
+        context: .
+        dockerfile : Dockerfile-snowpack
+      container_name: snowpackuser
+      environment:
+      #Use your DarkSnow credentials
+        USER : 'myusername'
+        PASSWORD : 'Password1234'
+      privileged: true
+      stdin_open: true
+      tty: true
+
+      healthcheck:
+        test: sudo nft list ruleset | grep -q 'SNOWPACK';
+        timeout: 30s
+        interval: 1s
+        retries: 3
+
+    tor_over_snowpack:
+      build:
+        context : .
+        dockerfile : Dockerfile
+      #image : nana_torbrowser
+      network_mode: service:snowpack
+      environment:
+        - DISPLAY=:0
+      volumes:
+        - /tmp/.X11-unix:/tmp/.X11-unix
+        #Replace username by your host username
+        - /home/username:/home/toruser

@@ -1,0 +1,40 @@
+{
+  "ROUTE1": {
+    "Id": 1,
+    "Route": {
+      "Country": "Germany"
+      
+      
+    },
+    "Protocols":
+    [
+      {
+        "name": "any",
+        "not daddr": ["98.207.254.136", "1.1.1.1"],
+        "not dport": ["8081", "2000-2050", "3000-4000"]
+      }
+
+
+    ]
+  },
+
+  "ROUTE2": {
+    "Id": 2,
+    "Route": {
+      "Country": "France"
+      
+     
+    },
+    "Protocols":
+    [
+      {
+        "name": "icmp"
+      },
+      {
+        "name": "tcp",
+        "daddr": ["8.8.8.8"],
+        "dport": ["8081", "2000-2050", "3000-4000"]
+      }
+    ]
+  }
+}

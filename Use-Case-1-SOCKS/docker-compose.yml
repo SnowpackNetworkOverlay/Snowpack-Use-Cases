@@ -1,0 +1,33 @@
+---
+version: "2.1"
+services:
+    snowpackuser:
+      build:
+        context: .
+        dockerfile: Dockerfile
+      environment:
+      #Replace your login credentials here! YOU NEED TO HAVE AT LEAST SUBSCRIBED TO A REDSNOW PLAN!
+        USER: 'myusername' 
+        PASSWORD: 'Password1234'
+      volumes:
+        - ./snowpack/config_user_routes.json:/root/snowpack/config_user_routes.json
+      container_name: snowpackuser
+      ports:
+        - "1080:1080" #Default port on which the socks proxy listen to
+      privileged: true
+      stdin_open: true
+      tty: true
+
+      healthcheck:
+        test: sudo nft list ruleset | grep -q 'SNOWPACK';
+        timeout: 30s
+        interval: 1s
+        retries: 3
+
+    socks5:
+      image: serjs/go-socks5-proxy
+      container_name: socks5
+        #environment:
+        #- PROXY_USER=username # Comment out for no user/password
+          #- PROXY_PASSWORD=Snowpack1234 # Comment out for no userpassword
+      network_mode: service:snowpackuser #to force the socks5 proxy traffic to go through snowpack

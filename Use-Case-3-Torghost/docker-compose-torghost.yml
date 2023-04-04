@@ -1,0 +1,12 @@
+---
+version: "2.1"
+services:
+  torghost:
+    build:
+      context : .
+      dockerfile: Dockerfile
+    container_name: torghost-alone
+    cap_add:
+      - NET_ADMIN
+    stdin_open: true
+    tty: true

@@ -1,0 +1,44 @@
+---
+version: "2.1"
+services:
+    snowpack:
+      #image : snowpack_userprod:1.0
+      build: 
+        context : .
+        dockerfile : Dockerfile-snowpack
+      environment:
+      #Replace your login credentials here! YOU NEED TO HAVE AT LEAST SUBSCRIBED TO A REDSNOW PLAN!
+        USER: 'snowpack' 
+        PASSWORD: 'Snowpack1234'
+      volumes:
+        - ./snowpack/config_user_routes.json:/root/snowpack/config_user_routes.json
+      container_name: snowpackuser
+      networks:
+        use-case-n-3-torghost:
+          ipv4_address: 192.168.96.2
+      privileged: true
+      stdin_open: true
+      tty: true
+
+      healthcheck:
+        test: sudo nft list ruleset | grep -q 'SNOWPACK';
+        timeout: 30s
+        interval: 1s
+        retries: 3
+
+    torghost:
+      image: torghostkali:1.0
+      container_name: torghost-over-snowpack
+      cap_add:
+        - NET_ADMIN
+      network_mode: service:snowpack
+      stdin_open: true
+      tty: true
+
+networks:
+  use-case-n-3-torghost:
+    name: use-case-n-3-torghost
+    ipam:
+      config:
+      - subnet: "192.168.96.0/19"
+        ip_range: "192.168.96.0/19"

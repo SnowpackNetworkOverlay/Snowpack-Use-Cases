@@ -32,7 +32,7 @@ To overcome this problem, ***we use the Snowpack Network Overlay (SNO)*** to ent
 
 #### Requirements
 
-- For the purpose of this demonstration, we will need to have Docker and docker-compose installed and up to date. Check out the [docker documentation](ttps://docs.docker.com/engine/install/) to install if they are not already installed on your host.
+- For the purpose of this demonstration, we will need to have Docker and docker-compose installed and up to date. Check out the [docker documentation](https://docs.docker.com/engine/install/) to install if they are not already installed on your host.
 - For our Kali linux, we will use the [kalilinux/kali-rolling:latest](https://hub.docker.com/r/kalilinux/kali-rolling) image by Kali.
 - Finally, we will use [Susmith Krishnan's](https://github.com/SusmithKrishnan/Torghost) work on Torghost.
 
@@ -72,7 +72,7 @@ docker exec -it d4b17e39eedc /bin/bash
 ```
 You are then prompted with a bash terminal inside the container.
 
-![Accessing the container](images/access%20Torghost%20container.png)
+![Accessing the container](images/access%20torghost%20container.png)
 
 3. Modify the Torghost.py script to add the docker network IP address to the exception.
 

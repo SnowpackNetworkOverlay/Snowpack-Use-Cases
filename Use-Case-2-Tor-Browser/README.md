@@ -28,7 +28,7 @@ As mentioned before, when using Tor to access a service on the Internet, the cli
 For additional protection we will use the Snowpack Network Overlay (SNO). SNO is a network that provides invisibility (anonymity) on the Internet without any third party. When traffic is sent through the SNO, metadata is removed, making the identity of the sender unkwown, even to Snowpack; then it is broken into fragments. Those fragments are then sent over different routes on the Internet, providing security and privacy. By sending our traffic through SNO before accessing the Tor network, we can protect the identity of our users on the Tor network. Also, we know that a Tor relay node can be operated by anyone, even an attacker could operate one. And in our case, where sensitive information is exchanged, it is critical that our user's identity remains anonymous to prevent our investigation from being tampered with or, worse, their security from being compromised. Therefore, even if an attacker were to put back together all the complementary fragments sent through SNO and reconstruct the traffic flow, he would not be able to figure out the identity of our user. As a result, by sending the user's traffic through SNO, our user is able to safely access the hidden services on the Tor network while staying anonymous.
 
 
-Our scenario then looks like this : (replace this with a schema)
+Our scenario then looks like this : 
 - Our user connects to Snowpack using their DarkSnow credentials
 - Our user opens Tor Browser and connects to the Tor network
 - Traffic from the Tor Browser is sent through SNO, which on a network level means that our user is directly connected to Snowpack, and the tor entry node sees Snowpack

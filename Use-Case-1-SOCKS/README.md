@@ -10,7 +10,7 @@ Using a  SOCKS proxy has several advantages, such as the fact that the  SOCKS pr
 
 There are several use cases for a SOCKS proxy. In Cybersecurity, it is often used as a penetration testing tool, either alone or in combination with other tools. For example, it happens that pentesters hired by a company to test its internal network are not given unrestricted access to the corporate network; the only access to a server or network they have is remote access, called a jump box, to a secured machine via RDP. And usually the company does not allow the installation of (non-administrative) tools such as nmap, etc. on the machine(forcing pentesters to go through a long procedure to get the tools they need). In such cases, tools like "SOCKS Over RDP" from [NCCGroup](https://github.com/nccgroup/SocksOverRDP) can be useful, facilitating the installation of security testing tools by enabling a SOCKS proxy on the machine and sending the requests through the proxy.
 
-In this example, we will consider the following architecture/topology/scenario:
+In this example, we will consider the following scenario:
 
 A network administrator has configured a SOCKS 5 proxy on the local network so that user traffic passes through the proxy before reaching the Internet. In this case, the proxy is used like a network firewall, allowing the administrator to filter outgoing and incoming HTTP and HTTPS traffic and better control what users can and cannot access on the Internet.
 

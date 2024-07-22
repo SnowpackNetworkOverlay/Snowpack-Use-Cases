@@ -12,8 +12,8 @@ RUN apt-get install -y wget xz-utils
 
 
 WORKDIR /home/tor
-RUN wget https://www.torproject.org/dist/torbrowser/12.0.4/tor-browser-linux64-12.0.4_ALL.tar.xz
-RUN tar -xvf tor-browser-linux64-12.0.4_ALL.tar.xz
+RUN wget https://www.torproject.org/dist/torbrowser/12.0.4/tor-browser-linux-x86_64-13.5.1.tar.xz
+RUN tar -xvf tor-browser-linux-x86_64-13.5.1.tar.xz
 RUN rm *.tar.xz
 
 

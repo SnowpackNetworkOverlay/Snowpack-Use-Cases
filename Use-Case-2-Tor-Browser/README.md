@@ -47,13 +47,12 @@ In this part, we will show step by step how to send our user's traffic through t
 
 #### Step 1 : Building images 
 
-Use the following command to build the torbrowser and snowpack user images:
+Use the following command to build the torbrowser image:
 
 ```
 docker compose build --no-cache
 ```
-This command will build both images using the build section on each service on the docker-compose.yml file.
-***If you prefer building the images one by one to reuse them separately for example, use the following command :***
+***If you prefer building the image separately so that you could name it for example, use the following command :***
 ```
 docker build -t torbrowser .
 ```
@@ -154,7 +153,7 @@ In this example, we will be launching the snowpackuser service with multiroutes 
 docker compose up
 ```
 
-5. If you have made changes to the any of the dockerfiles  you can rebuild the images with the following command:
+5. If you have made changes to the any of the dockerfile  you can rebuild the image with the following command:
 ```
 docker compose build --no-cache
 ```

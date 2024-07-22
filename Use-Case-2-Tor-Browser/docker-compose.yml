@@ -2,9 +2,7 @@
 version: "2.1"
 services:
     snowpack:
-      build :
-        context: .
-        dockerfile : Dockerfile-snowpack
+      image: snowpack/snowpack-user:latest
       container_name: snowpackuser
       environment:
       #Use your DarkSnow credentials

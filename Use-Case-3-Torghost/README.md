@@ -20,7 +20,7 @@ Let's consider the following use case: A pentester wants to investigate the beha
 
 #### Why use Snowpack Network Overlay (SNO)? 
 
-By using the Tor network to route the Kali Linux’s traffic, the IP address of the host remains hidden. However, the Tor network’s Guard Relay being ***directly connected to the host and therefore knows of our identity.*** Thus, if this node were to be compromised, our identity could be known. Similarly, since Tor relays can be run by anyone with the necessary resources, it’s not excluded that one of our nodes be operated by an attacker.
+By using the Tor network to route the Kali Linux’s traffic, the IP address of our host remains hidden. However, the Tor network’s Guard Relay being ***directly connected to the host knows our identity.*** Thus, if this node were to be compromised, our identity could be known. Similarly, since Tor relays can be run by anyone with the necessary resources, it’s not excluded that one of our nodes be operated by an attacker.
 
 To overcome this problem, ***we use the Snowpack Network Overlay (SNO)*** to enter Tor. Sending our network traffic through SNO before it is routed over the Tor network adds a layer of privacy to the host: our host’s IP address is stripped from the packets, making it completely anonymous, even to Snowpack. The attacker’s C2 and anyone sniffing the traffic on that end of the communication will still see the Exit Relay’s IP address, and the Guard Relay will see Snowpack's public address.
 
@@ -84,7 +84,7 @@ Scroll to the iptables rules and in the NON_Tor, add the docker network address 
 
 ![Adding docker network address](images/Add%20networks%20to%20iptable%20rules.png)
 
-Then save and exit by typing Ctrl+S then Ctrl+X
+Then save and exit by doing Ctrl+S followed by Ctrl+X
 
 4. Launch the Torghost script
 ```

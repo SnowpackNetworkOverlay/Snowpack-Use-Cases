@@ -2,10 +2,7 @@
 version: "2.1"
 services:
     snowpack:
-      #image : snowpack_userprod:1.0
-      build: 
-        context : .
-        dockerfile : Dockerfile-snowpack
+      image : snowpack/snowpack-user:latest
       environment:
       #Replace your login credentials here! YOU NEED TO HAVE AT LEAST SUBSCRIBED TO A REDSNOW PLAN!
         USER: 'snowpack' 

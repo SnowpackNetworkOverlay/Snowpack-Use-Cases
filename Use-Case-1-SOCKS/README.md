@@ -36,7 +36,22 @@ When traffic is sent through the snowpack network, metadata such as IP addresses
 
 ### Configuration
 
-#### Step 1 : Choosing your routes 
+#### Step 1 : Choosing your argument 
+
+You can run your Snowpack service with any of the following options:
+- ``` -a [ --auto ] ```  starts user with automatic route
+- ```-r [ --route ] ```  specify the network route manually [ip_pu1] [ip_pu2] [ip_ps1] [ip_ps2] [ip_holo] <br />
+***Example :*** ```-r 1.1.1.1 2.2.2.2 3.3.3.3 4.4.4.4 5.5.5.5``` 
+- ``` -mr [--multiroute] arg ```  path to config file to launch snowpack in multiroute mode
+- ``` --kill-switch ```  enables Kill switch mode (preservs anonymity)
+- ``` --auto-reconnect  ``` enables Auto retry on connection lost (preserve connectivity)
+- ``` -l [ --log ] arg ``` specify path to log file. Default path is /var/log
+
+To do this, open the docker-compose.yml file, and change the value of the **ADDITIONAL_ARGS** variable to the desired argument. 
+Note that if you decide to use the multiroute argument with ``` -mr ``` or ``` --multiroute ``` argument, you need to specify the name of the multi route configuration file. The next section explains how to edit and customise this file.
+To manualLY specify of the route with ``` -r ```, you must use valid Snowpack IP addresses and make sure the **ip_ps1** IP address is a Master IP address.
+
+##### Multiroute configuration
 
 To choose your exit nodes, or your routes, edit the config_user_routes.json file in the snowpack/ folder. You can either change the country or directly use the nodes IP addresses if you have access to them.
 ```

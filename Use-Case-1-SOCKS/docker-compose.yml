@@ -2,13 +2,19 @@
 version: "2.1"
 services:
     snowpackuser:
-      image: snowpack/snowpack-user:latest
+      image: snowpackvipn/snowpack-user:latest
       environment:
       #Replace your login credentials here! YOU NEED TO HAVE AT LEAST SUBSCRIBED TO A REDSNOW PLAN!
         USER: 'myusername' 
         PASSWORD: 'Password1234'
+        # List of possible args:
+        #    -a for automatic route selection
+        #    -r for manual route selection 
+        # Refer to the README file for more options
+        ADDITIONAL_ARGS: ' -a'
+        
       volumes:
-        - ./snowpack/config_user_routes.json:/root/snowpack/config_user_routes.json
+        - ./config_user_routes.json:/root/config_user_routes.json
       container_name: snowpackuser
       ports:
         - "1080:1080" #Default port on which the socks proxy listen to
@@ -25,7 +31,4 @@ services:
     socks5:
       image: serjs/go-socks5-proxy
       container_name: socks5
-        #environment:
-        #- PROXY_USER=username # Comment out for no user/password
-          #- PROXY_PASSWORD=Snowpack1234 # Comment out for no userpassword
       network_mode: service:snowpackuser #to force the socks5 proxy traffic to go through snowpack

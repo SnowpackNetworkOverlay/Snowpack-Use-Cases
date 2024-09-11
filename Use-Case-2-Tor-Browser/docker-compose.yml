@@ -2,14 +2,21 @@
 version: "2.1"
 services:
     snowpack:
-      build :
-        context: .
-        dockerfile : Dockerfile-snowpack
+      image: snowpackvipn/snowpack-user:latest
       container_name: snowpackuser
       environment:
       #Use your DarkSnow credentials
         USER : 'myusername'
         PASSWORD : 'Password1234'
+        # List of possible args:
+        #    -a for automatic route selection
+        #    -r for manual route selection 
+        # Refer to the README file for more options
+        ADDITIONAL_ARGS: ' -a'
+      volumes:
+        - ./config_user_routes.json:/root/config_user_routes.json
+      ports:
+        - "6000:6000"
       privileged: true
       stdin_open: true
       tty: true
@@ -20,15 +27,19 @@ services:
         interval: 1s
         retries: 3
 
-    tor_over_snowpack:
+    torbrowser-over-snowpack:
       build:
-        context : .
-        dockerfile : Dockerfile
-      #image : nana_torbrowser
+        context: .
+        dockerfile: Dockerfile
       network_mode: service:snowpack
       environment:
-        - DISPLAY=:0
+        - DISPLAY=${DISPLAY}
+        - WAYLAND_DISPLAY=${WAYLAND_DISPLAY} 
+        #- UID=1000
+        #- GID=1000 
       volumes:
         - /tmp/.X11-unix:/tmp/.X11-unix
-        #Replace username by your host username
-        - /home/username:/home/toruser
+        - ${XDG_RUNTIME_DIR}/wayland:/tmp/wayland
+      stdin_open: true
+      tty: true 
+      user: "1000:1000" #Replace the value with your host's UID and GID user : "${UID}:${GID}"

@@ -12,19 +12,19 @@ There are several use cases for a SOCKS proxy. In Cybersecurity, it is often use
 
 In this example, we will consider the following scenario:
 
-A network administrator has configured a SOCKS 5 proxy on the local network so that user traffic passes through the proxy before reaching the Internet. In this case, the proxy is used like a network firewall, allowing the administrator to filter outgoing and incoming HTTP and HTTPS traffic and better control what users can and cannot access on the Internet.
+A network administrator has configured a SOCKS 5 proxy on the local network so that user traffic passes through the proxy before reaching the Internet. In this case, the proxy is used like a network firewall, allowing the administrator to filter outbound and inbound HTTP and HTTPS traffic and better control what users can and cannot access on the Internet.
 
 ![Initial infra SOCKS5](images/draw.png)
 
-Although there are many advantages to using a SOCKS5 protocol, as mentioned earlier, it also has some disadvantages. For example, while the version 5 of the protocol provides authentication and supports SSH, it does not provide encryption. Thus, an SSH tunnel can be established between the server and the client, but the traffic leaving the server is completely unprotected. If the visited website is an HTTP website for example, all data is likely to be seen by an attacker.
-To fix this problem, we connect to the Snowpack Network Overlay(SNO), as shown in the figure below, and route all traffic from the proxy server directly to a Snowgate before it reaches the Internet.
+Although there are many advantages to using a SOCKS5 protocol, as mentioned above, it also has some disadvantages. For example, although the version 5 of the protocol provides authentication and supports SSH, it does not provide encryption. Thus, an SSH tunnel can be established between the server and the client. However, the traffic leaving the server will still be completely unprotected. If the visited website is an HTTP website for example, all data is likely to be seen by an attacker.
+To resolve this issue, we connect to the Snowpack Network Overlay(SNO), as shown in the figure below, and route all traffic from the proxy server directly to a Snowgate before it reaches the Internet.
 
 
 ## SOCKS5 over SNO
 
 ![Initial infra SOCKS5](images/socks5%20over%20snowpack.png)
 
-When traffic is sent through the snowpack network, metadata such as IP addresses are completely removed from the packets before being routed on the Internet, making the users completely anonymous, even to the snowpack network; data is encrypted, split (into what we call snowflakes) and sent over the Internet through different routes, making it next to impossible to track. Moreover, it doesn’t change anything for the administrator as he is still able to control and filter the HTTP/HTTPS network’s traffic as he would without the snowpack network.
+When traffic is sent through the snowpack network, metadata such as IP addresses are stripped from the packets before being routed on the Internet, making the users completely anonymous, even to the snowpack network; data is encrypted, split (into what we call snowflakes) and sent over the Internet through different routes, making it next to impossible to track. Moreover, it doesn’t change anything for the administrator as he is still able to control and filter the HTTP/HTTPS network’s traffic as he would without the snowpack network.
 
 ## Deploy
 
@@ -32,25 +32,26 @@ When traffic is sent through the snowpack network, metadata such as IP addresses
 
 - For the purpose of this demonstration, we will be using Docker. Check out the [docker documentation](https://docs.docker.com/engine/install/) to install Docker and docker compose on your host if not already installed. 
 - For the SOCKS5 proxy, we will be using [Sergey Bogayrets's](https://github.com/serjs/socks5-server) SOCKS5 proxy image found [here](https://hub.docker.com/r/serjs/go-socks5-proxy/).
-- For the SNO, the Dockerfile and docker-compose.yml files will be provided. **Running the snowpackuser service will however require the login credentials (username and password) of a user who has at least subscribed to the RedSnow package.** Visit [the snowpack webpage](  to learn more about the different packages available and how to subscribe to a plan that meets your needs.
+- A docker-compose.yml file containing the necessary configuration for Snowpack and the SOCKS proxy will be provided. **Running the snowpackuser service will however require the login credentials (username and password) of a user who has at least subscribed to the RedSnow package.** Visit [the snowpack webpage](https://snowpack.eu/)  to learn more about the different plans available and how to subscribe to a plan that meets your needs.
 
 ### Configuration
 
-#### Step 1 : Build the snowpack image 
+#### Step 1 : Choosing your argument 
 
-***This step is optional because the docker-compose.yml file has a build section for the snowpack image. So if no image is built prior to launching the services with docker compose, the image will be built.***
+You can run your Snowpack service with any of the following options:
+- ``` -a [ --auto ] ```  starts user with automatic route
+- ```-r [ --route ] ```  specify the network route manually [ip_pu1] [ip_pu2] [ip_ps1] [ip_ps2] [ip_holo] <br />
+***Example :*** ```-r 1.1.1.1 2.2.2.2 3.3.3.3 4.4.4.4 5.5.5.5``` 
+- ``` -mr [--multiroute] arg ```  path to config file to launch snowpack in multiroute mode
+- ``` --kill-switch ```  enables Kill switch mode (preservs anonymity)
+- ``` --auto-reconnect  ``` enables Auto retry on connection lost (preserve connectivity)
+- ``` -l [ --log ] arg ``` specify path to log file. Default path is /var/log
 
-To build the image, use the following command:
-```
-docker compose build
-```
+To do this, open the docker-compose.yml file, and change the value of the **ADDITIONAL_ARGS** variable to the desired argument. 
+Note that if you decide to use the multiroute argument with ``` -mr ``` or ``` --multiroute ``` argument, you need to specify the name of the multi route configuration file. The next section explains how to edit and customise this file.
+To manualLY specify of the route with ``` -r ```, you must use valid Snowpack IP addresses and make sure the **ip_ps1** IP address is a Master IP address.
 
-If you had previously built the image, and wanted to rebuild it after a modification for example, use the ***--no-cache*** flag like so:
-```
-docker compose build --no-cache
-```
-
-#### Step 2 : Choosing your routes 
+##### Multiroute configuration
 
 To choose your exit nodes, or your routes, edit the config_user_routes.json file in the snowpack/ folder. You can either change the country or directly use the nodes IP addresses if you have access to them.
 ```
@@ -100,10 +101,10 @@ To choose your exit nodes, or your routes, edit the config_user_routes.json file
   You may change the Country name to France, Poland or another country, as long as it's a country in which Snowpack nodes are deployed.
   Replace the "Pu2_IP_address" by ***actual***  IP addresses.
   ***Note that you can choose to use the Country name for both your routes, or only IP addresses. Both ways work well.***
-  ***Be mindful of characters when editing the documents. Unexpected charcaters such as unwanted spaces will result in the service not running.*** 
+  ***Be mindful of characters when editing the documents. Unexpected characters such as unwanted spaces will result in the service not running.*** 
 
 
-#### Step 3 : Launch and stop the services 
+#### Step 2 : Launch and stop the services 
 
 Before launching the services, change the environment variables values to your username and your password in the docker-compose.yml file like so: 
 ```
@@ -127,7 +128,7 @@ docker compose down
 ```
 ***You can also use Ctrl+C to stop the services. However, the containers will not be removed, and any changes you make will not be taken into account. If you relaunch the services, the previous containers will simply be turned up.***
 
-#### Step 4 : Test
+#### Step 3 : Test
 
 You can test tat your configuration is working either directly on the command line or with a browser such as firefox.
 
@@ -165,9 +166,22 @@ Open the Firefox browser. Access the Settings by clicking on the burger Menu on 
 ![Open Settings](images/Firefox%20settings.png)
 
 Once on the Settings page, scroll all the way down to the Network Settings. Then click on Settings.
-Next, select the Manual proxy configuration, click on SOCKS v5, then type the IP address of your docker0 interface and click ok.
+Next, select the Manual proxy configuration, click on SOCKS v5, then type the IP address of your docker interface and click ok.
+
 
 ![Configure Proxy](images/Manual%20proxy%20config.png)
+
+If, for example you have multiple containers running, and are not sure which IP address to use, you can find out usig the following commands: 
+```
+docker network ls 
+```
+***This command will list all the docker networks.***
+
+```
+docker network inspect network_name
+```
+
+***With this command, you will be able to see the containers attached to a specific network.***
 
 After completing the proxy configuration, open another window, and go to [https://www.whatsmyip.org/](https://www.whatsmyip.org/) to know your IP address on the Internet. Follow the link with and without the proxy configuration to observe the IP address difference.
 

@@ -1,14 +1,19 @@
-version: '2'
+version: '3.8'
 
 services:
   torbrowser:
-    build: 
-      context : .
-      dockerfile : Dockerfile
+    build:
+      context: .
+      dockerfile: Dockerfile
     network_mode: "host"
     environment:
-      - DISPLAY=:0
+      - DISPLAY=${DISPLAY}
+      - WAYLAND_DISPLAY=${WAYLAND_DISPLAY} 
+      #- UID=1000
+      #- GID=1000 
     volumes:
       - /tmp/.X11-unix:/tmp/.X11-unix
-      #Replace the keyword "username" with your host's username
-      - /home/username/tor:/home/toruser/tor
+      - ${XDG_RUNTIME_DIR}/wayland:/tmp/wayland
+    stdin_open: true
+    tty: true 
+    user: "1000:1000" #Replace the value with your host's UID and GID user : "${UID}:${GID}"

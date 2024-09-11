@@ -52,7 +52,7 @@ Use the following command to build the torbrowser image:
 ```
 docker compose build --no-cache
 ```
-***If you prefer building the image separately so that you could name it for example, use the following command :***
+***If you prefer building the image separately, for example for naming purposes, use the following command :***
 ```
 docker build -t torbrowser .
 ```
@@ -64,15 +64,7 @@ This command will use the Dockerfile to build an image, will name it torbrowser 
 ##### Torbrowser alone 
 
 
-1. Before launching the torbrowser service alone, replace "username" with your host's username in the docker-compose_torbrowseronly.yml file.
-To get your username, type the following command in Linux:
-```
-whoami
-```
-![Changing username](images/Change%20username.png)
-
-
-2. Then, launch torbrowser with the following command:
+2. Launch torbrowser with the following command:
 ```
 docker compose -f docker-compose_torbrowseronly.yml up
 ```
@@ -91,18 +83,35 @@ docker compose -f docker-compose_torbrowseronly.yml down
 
 ##### Requirements
 
-In this example, we will be launching the snowpackuser service with multiroutes configuration. To follow along, and be able to use the Tor Browser over SNO, you need to have subscribed to at least the Snowpack DarkSnow plan. **If you are subscribed to a FreeSnow, OneSnow plan,  or if you do not have a Snowpack account, you will not be able to run the snowpackuser service**. Learn more about about the different packages available and how to subscribe to a plan that meets your needs at [snowpack.eu](https://snowpack.eu/).
+In this example, we will be launching the snowpackuser service with multiroutes configuration. To follow along, and be able to use the Tor Browser over SNO, you need to have subscribed to at least the Snowpack DarkSnow plan. **If you are subscribed to a FreeSnow, OneSnow or RedSnow plan,  or if you do not have a Snowpack account, you will not be able to run the snowpackuser service**. Learn more about about the different packages available and how to subscribe to a plan that meets your needs at [snowpack.eu](https://snowpack.eu/).
 
 
-1. Before launching the services, repeat the Step 2.1 of the previous part. In the docker-compose.yml file, change the keyworkd "username" in the volumes section of the tor_over_snowpack service to your host username.
 
-2. In the same file (docker-compose.yml) change the environment variables values to your Snowpack account login credentials. ***Remember, you need to be subscribed to at least DarkSnow!***
+1. In the docker-compose.yml file, change the environment variables values to your Snowpack account login credentials. ***Remember, you need to be subscribed to at least DarkSnow!***
 
-![Replace user credentials](images/user%20credentials.png)
+![Replace user credentials](images/darksnow-cred.png)
 
 ***Replace "myusername" and "Password1234" with your credentials.***
+<br />
 
-3. As mentioned before, we will be launching SNO with multiroutes. This option lets you choose 2 different routes for your traffic. To do so, edit the config_user_routes.json file in the snowpack/bin folder. You may do so by using a country name or IP adresses.
+2. You can launch your Snowpack application[service] with any of the following options:
+- ``` -a [ --auto ] ```  starts user with automatic route
+- ```-r [ --route ] ```  specify the network route manually [ip_pu1] [ip_pu2] [ip_ps1] [ip_ps2] [ip_holo] <br />
+***Example :*** ```-r 1.1.1.1 2.2.2.2 3.3.3.3 4.4.4.4 5.5.5.5``` 
+- ``` -mr [--multiroute] arg ```  path to config file to launch snowpack in multiroute mode
+- ``` --kill-switch ```  enables Kill switch mode (preservs anonymity)
+- ``` --auto-reconnect  ``` enables Auto retry on connection lost (preserve connectivity)
+- ``` -l [ --log ] arg ``` specify path to log file. Default path is /var/log
+
+To do this, open the docker-compose.yml file, and change the value of the **ADDITIONAL_ARGS** variable to the desired argument. 
+Note that if you decide to use the multiroute argument with ``` -mr ``` or ``` --multiroute ``` argument, you need to specify the name of the multi route configuration file. The next section explains how to edit and customise this file.
+To manually specify of the route with ``` -r ```, you must use IP addresses of active nodes in the Snowpack network, making sure the **ip_ps1** address points to a node with ```master: true```.
+
+<br />
+
+##### Multiroute configuration
+
+As mentioned before, we will be launching our snowpack application with multiroute in this example. This option lets you choose 2 different routes for your traffic. To do so, edit the config_user_routes.json file in the snowpack/bin folder. You may choose your routes using a country name or valid Snowpack IP adresses, if you have access to those.
 ```
 {
   "ROUTE1": {
@@ -148,17 +157,17 @@ In this example, we will be launching the snowpackuser service with multiroutes 
 }
 ```
 
-4. Launch the services with the following command:
+3. Launch the services with the following command:
 ```
 docker compose up
 ```
 
-5. If you have made changes to the any of the dockerfile  you can rebuild the image with the following command:
+4. If you have made changes to the Dockerfile  you can rebuild the image with the following command:
 ```
 docker compose build --no-cache
 ```
 
-6. To stop the services and remove the conatiners, use the following command:
+5. To stop the services and remove the containers, use the following command:
 ```
 docker compose down
 ```

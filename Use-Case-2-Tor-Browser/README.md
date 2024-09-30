@@ -45,26 +45,11 @@ In this part, we will show step by step how to send our user's traffic through t
 - If you do not have Docker and docker compose installed, click [here](https://docs.docker.com/engine/install/) to install.
 
 
-#### Step 1 : Building images 
-
-Use the following command to build the torbrowser image:
-
-```
-docker compose build --no-cache
-```
-***If you prefer building the image separately, for example for naming purposes, use the following command :***
-```
-docker build -t torbrowser .
-```
-This command will use the Dockerfile to build an image, will name it torbrowser and tag it "latest".
-
-#### Step 2 : Launching the services 
-
 
 ##### Torbrowser alone 
 
 
-2. Launch torbrowser with the following command:
+1. Launch torbrowser with the following command:
 ```
 docker compose -f docker-compose_torbrowseronly.yml up
 ```
@@ -72,7 +57,7 @@ If everything works well; you should be prompted with the Tor Browser.
 
 ![Torbrowser](images/torbrowser.png)
 
-3. To stop and remove the container, use the following command :
+2. To stop and remove the container, use the following command :
 ```
 docker compose -f docker-compose_torbrowseronly.yml down
 ```
@@ -156,18 +141,22 @@ As mentioned before, we will be launching our snowpack application with multirou
   }
 }
 ```
+3. Before launching the torbrowser over snowpack, make sure you pull the latest version of snowpack using the following command:
+```
+docker compose pull
+```
 
-3. Launch the services with the following command:
+4. Launch the services with the following command:
 ```
 docker compose up
 ```
 
-4. If you have made changes to the Dockerfile  you can rebuild the image with the following command:
+5. If you have made changes to the Dockerfile  you can rebuild the image with the following command:
 ```
 docker compose build --no-cache
 ```
 
-5. To stop the services and remove the containers, use the following command:
+6. To stop the services and remove the containers, use the following command:
 ```
 docker compose down
 ```

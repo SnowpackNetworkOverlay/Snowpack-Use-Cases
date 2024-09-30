@@ -24,7 +24,7 @@ To resolve this issue, we connect to the Snowpack Network Overlay(SNO), as shown
 
 ![Initial infra SOCKS5](images/socks5%20over%20snowpack.png)
 
-When traffic is sent through the snowpack network, metadata such as IP addresses are stripped from the packets before being routed on the Internet, making the users completely anonymous, even to the snowpack network; data is encrypted, split (into what we call snowflakes) and sent over the Internet through different routes, making it next to impossible to track. Moreover, it doesn’t change anything for the administrator as he is still able to control and filter the HTTP/HTTPS network’s traffic as he would without the snowpack network.
+When traffic is sent through the snowpack network, metadata such as IP addresses are stripped from the packets before being routed on the Internet, making the users completely anonymous, even to the snowpack network; data is encrypted, split into what we call snowflakes and sent over the Internet through different routes, making it next to impossible to track. Moreover, it doesn’t change anything for the administrator as they are still able to control and filter the HTTP/HTTPS network’s traffic as they would without the Snowpack network.
 
 ## Deploy
 
@@ -38,18 +38,20 @@ When traffic is sent through the snowpack network, metadata such as IP addresses
 
 #### Step 1 : Choosing your argument 
 
-You can run your Snowpack service with any of the following options:
+You can launch your Snowpack application[service] with any of the following options:
 - ``` -a [ --auto ] ```  starts user with automatic route
 - ```-r [ --route ] ```  specify the network route manually [ip_pu1] [ip_pu2] [ip_ps1] [ip_ps2] [ip_holo] <br />
 ***Example :*** ```-r 1.1.1.1 2.2.2.2 3.3.3.3 4.4.4.4 5.5.5.5``` 
 - ``` -mr [--multiroute] arg ```  path to config file to launch snowpack in multiroute mode
-- ``` --kill-switch ```  enables Kill switch mode (preservs anonymity)
+- ``` --kill-switch ```  enables Kill switch mode (preserves anonymity)
 - ``` --auto-reconnect  ``` enables Auto retry on connection lost (preserve connectivity)
-- ``` -l [ --log ] arg ``` specify path to log file. Default path is /var/log
+- ``` -l [ --log ] arg ``` specify path to log file. Default path is /var/log/snowpack.log
 
 To do this, open the docker-compose.yml file, and change the value of the **ADDITIONAL_ARGS** variable to the desired argument. 
 Note that if you decide to use the multiroute argument with ``` -mr ``` or ``` --multiroute ``` argument, you need to specify the name of the multi route configuration file. The next section explains how to edit and customise this file.
-To manualLY specify of the route with ``` -r ```, you must use valid Snowpack IP addresses and make sure the **ip_ps1** IP address is a Master IP address.
+To manually specify the route with ``` -r ```, you must use IP addresses of active nodes in the Snowpack network, making sure the **ip_ps1** address points to a node with ```master: true```.
+
+<br />
 
 ##### Multiroute configuration
 
@@ -98,29 +100,38 @@ To choose your exit nodes, or your routes, edit the config_user_routes.json file
   }
 }
   ```
-  You may change the Country name to France, Poland or another country, as long as it's a country in which Snowpack nodes are deployed.
-  Replace the "Pu2_IP_address" by ***actual***  IP addresses.
-  ***Note that you can choose to use the Country name for both your routes, or only IP addresses. Both ways work well.***
+  You may change the Country name to any country where Snowpack nodes are deployed.
+  Replace the "Pu2_IP_address" with the ***actual***  IP addresses.
+  ***Note that for each of your routes, you an choose to use either IP addresses, or Country name. And it also works to have IP addresses for one route, and a Country name for the other route.***
   ***Be mindful of characters when editing the documents. Unexpected characters such as unwanted spaces will result in the service not running.*** 
 
 
 #### Step 2 : Launch and stop the services 
 
-Before launching the services, change the environment variables values to your username and your password in the docker-compose.yml file like so: 
+Before launching the services, change the environment variable values to your username and your password in the docker-compose.yml file like so: 
 ```
 environment:
-      #Replace your login credentials here! YOU NEED TO HAVE AT LEAST SUBSCRIBED TO A REDSNOW PLAN!
-        USER: 'myusername' 
-        PASSWORD: 'Password1234'
+  #Replace your login credentials here! YOU NEED TO HAVE AT LEAST SUBSCRIBED TO A #REDSNOW PLAN!
+  USER: 'myusername' 
+  PASSWORD: 'Password1234'
 ```
 ***myusername*** and ***Password1234*** being your login credentials for your Snowpack account.
 
 ***Note that if you are not at least subscribed to the RedSnow plan as mentionned in the Requirements section, the authentication will fail, and the snowpack service will NOT launch.***
 
-Next, launch the services with the following command:
+
+Next, make sure your are using the latest version of Snowpack using the following command: 
+```
+docker compose pull
+```
+
+
+
+Finally, launch the services with the following command:
 ```
 docker compose up
 ```
+
 
 To stop the services and remove the containers, use the following command:
 ```
@@ -130,7 +141,7 @@ docker compose down
 
 #### Step 3 : Test
 
-You can test tat your configuration is working either directly on the command line or with a browser such as firefox.
+You can test that your configuration is working either directly on the command line or with a browser such as firefox.
 
 ##### CLI
 
@@ -138,7 +149,7 @@ Use the following curl command to check your IP address on the Internet :
 
 **Without SOCKS5 over snowpack:**
 ```
-curl -k -v http://icanhazip.com
+curl https://api.ipify.org/
 ```
 
 ![Crl command result](images/icanhazip%20without%20snowpack.png)
@@ -183,7 +194,7 @@ docker network inspect network_name
 
 ***With this command, you will be able to see the containers attached to a specific network.***
 
-After completing the proxy configuration, open another window, and go to [https://www.whatsmyip.org/](https://www.whatsmyip.org/) to know your IP address on the Internet. Follow the link with and without the proxy configuration to observe the IP address difference.
+After completing the proxy configuration, open another window, and go to [https://api.ipify.org/](https://api.ipify.org//) to know your IP address on the Internet. Follow the link with and without the proxy configuration to observe the IP address difference.
 
 
 # Contact Us

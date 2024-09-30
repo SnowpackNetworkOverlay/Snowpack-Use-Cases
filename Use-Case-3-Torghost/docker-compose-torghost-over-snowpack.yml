@@ -2,13 +2,18 @@
 version: "2.1"
 services:
     snowpack:
-      image : snowpack/snowpack-user:latest
+      image: snowpackvipn/snowpack-user:latest
       environment:
       #Replace your login credentials here! YOU NEED TO HAVE AT LEAST SUBSCRIBED TO A REDSNOW PLAN!
-        USER: 'snowpack' 
-        PASSWORD: 'Snowpack1234'
+        USER: 'myusername' 
+        PASSWORD: 'Password1234'
+        # List of possible args:
+        #    -a for automatic route selection
+        #    -r for manual route selection 
+        # Refer to the README file for more options
+        ADDITIONAL_ARGS: ' -a'
       volumes:
-        - ./snowpack/config_user_routes.json:/root/snowpack/config_user_routes.json
+        - ./config_user_routes.json:/root/config_user_routes.json
       container_name: snowpackuser
       networks:
         use-case-n-3-torghost:

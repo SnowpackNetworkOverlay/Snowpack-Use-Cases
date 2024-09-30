@@ -2,17 +2,17 @@ version: '3.8'
 
 services:
   torbrowser:
-    build:
+    build: 
       context: .
       dockerfile: Dockerfile
     network_mode: "host"
     environment:
       - DISPLAY=${DISPLAY}
-      - WAYLAND_DISPLAY=${WAYLAND_DISPLAY} 
+      #- WAYLAND_DISPLAY=${WAYLAND_DISPLAY} 
       #- UID=1000
       #- GID=1000 
     volumes:
-      - /tmp/.X11-unix:/tmp/.X11-unix
+      #- /tmp/.X11-unix:/tmp/.X11-unix
       - ${XDG_RUNTIME_DIR}/wayland:/tmp/wayland
     stdin_open: true
     tty: true 

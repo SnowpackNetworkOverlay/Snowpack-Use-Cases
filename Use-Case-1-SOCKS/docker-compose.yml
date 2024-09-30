@@ -1,5 +1,5 @@
 ---
-version: "2.1"
+version: "3.8"
 services:
     snowpackuser:
       image: snowpackvipn/snowpack-user:latest
@@ -12,7 +12,6 @@ services:
         #    -r for manual route selection 
         # Refer to the README file for more options
         ADDITIONAL_ARGS: ' -a'
-        
       volumes:
         - ./config_user_routes.json:/root/config_user_routes.json
       container_name: snowpackuser

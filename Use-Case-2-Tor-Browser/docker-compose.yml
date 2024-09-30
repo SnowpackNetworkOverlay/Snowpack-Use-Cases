@@ -6,8 +6,8 @@ services:
       container_name: snowpackuser
       environment:
       #Use your DarkSnow credentials
-        USER : 'myusername'
-        PASSWORD : 'Password1234'
+        USER : 'nana.bakalafoua@snowpack.eu'
+        PASSWORD : 'Snowpack1234'
         # List of possible args:
         #    -a for automatic route selection
         #    -r for manual route selection 
@@ -34,12 +34,12 @@ services:
       network_mode: service:snowpack
       environment:
         - DISPLAY=${DISPLAY}
-        - WAYLAND_DISPLAY=${WAYLAND_DISPLAY} 
+        #- WAYLAND_DISPLAY=${WAYLAND_DISPLAY} 
         #- UID=1000
         #- GID=1000 
       volumes:
         - /tmp/.X11-unix:/tmp/.X11-unix
-        - ${XDG_RUNTIME_DIR}/wayland:/tmp/wayland
+        #- ${XDG_RUNTIME_DIR}/wayland:/tmp/wayland
       stdin_open: true
       tty: true 
       user: "1000:1000" #Replace the value with your host's UID and GID user : "${UID}:${GID}"
